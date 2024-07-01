@@ -1,11 +1,13 @@
-FROM centos:6.6
-MAINTAINER SequenceIQ
+FROM centos:7
 
-# EPEL
-RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+RUN cd /etc/yum.repos.d/
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 
-# kerberos
-RUN yum install -y krb5-server krb5-libs krb5-auth-dialog krb5-workstation 
+
+# 1. Installing Kerberos server, admin and client
+RUN yum install -y krb5-server krb5-libs krb5-auth-dialog
+RUN yum install -y krb5-workstation krb5-libs
 
 EXPOSE 88 749
 
